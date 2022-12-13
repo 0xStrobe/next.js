@@ -21,10 +21,15 @@ export function setRevalidateHeaders(
     }
 
     res.setHeader(
+      'CDN-Cache-Control',
+      `max-age=${options.revalidate}, stale-while-revalidate=1200`
+    )
+    res.setHeader(
       'Cache-Control',
-      `s-maxage=${options.revalidate}, stale-while-revalidate`
+      `public, s-maxage=${options.revalidate}, stale-while-revalidate=1200`
     )
   } else if (options.revalidate === false) {
-    res.setHeader('Cache-Control', `s-maxage=31536000, stale-while-revalidate`)
+    res.setHeader('CDN-Cache-Control', `max-age=31536000, stale-while-revalidate=31536000`)
+    res.setHeader('Cache-Control', `public, s-maxage=31536000, stale-while-revalidate=31536000`)
   }
 }
